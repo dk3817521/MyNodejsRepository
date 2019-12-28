@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../node_modules/art-template/lib/template-web.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <style>
+        .id{
+            width: 500px;
+            height: 500px;
+        }
+        #ipt{
+            width: 100px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="id">
+
+    </div>
+    <input type="text" name="" id="ipt">
+    <button id="btn">click</button>
+</body>
+<script type="text/html" id="tmp">
+    <div>{{ message }}</div>
+</script>
+<script>
+    $(()=>{
+        $.ajax({
+            url:'http://localhost:3000/message',
+            success:(res)=>{
+                var fm=template('tmp',res)
+                $('.id').append(fm)
+            }
+        })
+        $('#btn').on('click',(e)=>{
+            console.log($('#ipt').val());
+            e.preventDefault()
+            $.ajax({
+                url:'http://localhost:3000/sendmessage?message='+$('#ipt').val(),
+                success:(res)=>{
+                    console.log(res);
+                    let fm=template('tmp',res)
+                    $('.id').append(fm)
+                }
+            })
+        })
+    })
+</script>
+</html>
